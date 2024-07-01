@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tp2</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+            
+        }
+        .box {
+            width: 200px;
+            height: 200px;
+            border: 2px solid black;
+            padding: 10px;
+        }
+        .selected {
+            background-color: red;
+        }
+        .notification {
+            position: fixed;
+            top: 0;
+            right: 0;
+            background-color: black;
+            color: #fff;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-5">
+            <div class="box" id="leftBox"></div>
+
+        </div>
+   <div class="col-2">
+    <div class="buttons">
+        <button id="moveRight" class="btn btn-primary" disabled>>></button>
+        <button id="moveLeft" class="btn btn-secondary mt-2" disabled><<</button>
+    </div>
+   </div>
+   <div class="col-5">
+    <div class="box" id="rightBox"></div>
+
+   </div>
+    </div>
+</div>
+
+<div id="notifications"></div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function() {
+        const items = ['Mon Premier', 'Mon Deuxième', 'Mon Troisième', 'Mon Quatrième'];
+        const $leftBox = $('#leftBox');
+        const $rightBox = $('#rightBox');
+        const $moveRight = $('#moveRight');
+        const $moveLeft = $('#moveLeft');
+        const $notifications = $('#notifications');
+        
+        function generateNotifications(message) {
+            const notification = $('<div class="notification"></div>').text(message);
+            $notifications.append(notification);
+            setTimeout(() => notification.remove(), 1000);
+        }
+
+        function updateButtons() {
+            $moveRight.prop('disabled', $leftBox.children().length === 0);
+            $moveLeft.prop('disabled', $rightBox.children().length === 0);
+        }
+
+        function createParagraphs(items, container) {
+            items.forEach(item => {
+                const p = $('<p></p>').text(item);
+                container.append(p);
+            });
+        }
+          
+        createParagraphs(items, $leftBox);
+
+        $leftBox.on('mouseover', 'p', function() {
+            $(this).addClass('selected').siblings().removeClass('selected');
+        });
+
+        $rightBox.on('mouseover', 'p', function() {
+            $(this).addClass('selected').siblings().removeClass('selected');
+        });
+
+        $moveRight.click(function() {
+            const selected = $leftBox.find('.selected');
+            if (selected.length) {
+                $rightBox.append(selected.removeClass('selected'));
+                generateNotifications("Moved to right");
+                updateButtons();
+            }
+        });
+
+        $moveLeft.click(function() {
+            const selected = $rightBox.find('.selected');
+            if (selected.length) {
+                $leftBox.append(selected.removeClass('selected'));
+                generateNotifications("Moved to left");
+                updateButtons();
+            }
+        });
+
+        updateButtons();
+    });
+</script>
+</body>
+</html>

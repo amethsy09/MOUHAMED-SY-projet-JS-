@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tp3</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 50px;
+            background-color: #c3cad1;
+        }
+        .notification {
+            position: fixed;
+            top: 0px;
+            right: 0px;
+            z-index: 1050;
+            display: flex;
+            flex-direction: column;
+        }
+        .notification .alert {
+            margin-top: 5px;
+            display: flex;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 20px;
+            background-color: azure;
+            border-radius: 5px;
+        }
+        .content-bottom {
+            display: flex;
+            justify-content: end;
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="container bg-light">
+        <div class="content">
+            <button id="notificationSuccess" class="btn btn-success mb-2">Notification Success</button>
+            <button id="notificationDanger" class="btn btn-danger mb-2">Notification Danger</button>
+            <button id="notificationWarning" class="btn btn-warning mb-2">Notification Warning</button>
+            <button id="notificationInfo" class="btn btn-info mb-2">Notification Info</button>
+        </div>
+        <div class="content-bottom mt-5">
+            <button id="monProjet" class="btn btn-secondary text-dark">Notre Projet</button>
+        </div>
+    </div>
+
+    <div id="notifications" class="notification"></div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        function showNotification(type, message) {
+            const notification = $('<div class="alert alert-' + type + '">' + message + '</div>');
+            $('#notifications').append(notification);
+            notification.slideDown(300).delay(1000).slideUp(300, function() {
+                $(this).remove();
+            });
+
+            switch (type) {
+                case 'success':
+                    console.log('Success:', message);
+                    break;
+                case 'danger':
+                    console.log('Danger:', message);
+                    break;
+                case 'warning':
+                    console.log('Warning:', message);
+                    break;
+                case 'info':
+                    console.log('Info:', message);
+                    break;
+                default:
+                    console.log('Type de notification non reconnu');
+            }
+        }
+
+        document.getElementById('notificationSuccess').onclick = function() {
+            showNotification('success', 'Action réussie !');
+        };
+
+        document.getElementById('notificationDanger').onclick = function() {
+            showNotification('danger', 'Erreur ! Quelque chose s\'est mal passé.');
+        };
+
+        document.getElementById('notificationWarning').onclick = function() {
+            showNotification('warning', 'Attention ! Vérifiez vos informations.');
+        };
+
+        document.getElementById('notificationInfo').onclick = function() {
+            showNotification('info', 'Information : Voici un message important.');
+        };
+
+        document.getElementById('monProjet').onclick = function() {
+            showNotification('info', 'Bienvenue dans Notre Projet!');
+        };
+
+        if (Notification.permission === "granted") {
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    console.log("Les notifications sont maintenant autorisées.");
+                }
+            });
+        }
+    </script>
+</body>
+</html>

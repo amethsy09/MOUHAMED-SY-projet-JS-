@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP1</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        /* body {
+            background-color: #80dfff;
+        } */
+        /* .note {
+            width: 200px;
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            margin: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        } */
+        .note-header {
+            background-color: #8cc63f;
+            display: flex;
+            justify-content: end;
+        }
+        .note-header i {
+            color: white;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        
+        .note textarea {
+            width: 100%;
+            border: none;
+            resize: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row content-bottom">
+            <button id="addNote" class="btn btn-success mt-3">+ Add note</button>
+        </div>
+        <div id="noteContainer" class="d-flex flex-wrap"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#addNote').click(function() {
+                createNote();
+            });
+
+            function createNote() {
+                let note = $(`
+                    <div class="note">
+                        <div class="note-header">
+                            <i class="fa fa-pencil edit"></i>
+                            <i class="fa fa-trash delete"></i>
+                        </div>
+                        <div class="note-body">
+                            <textarea disabled></textarea>
+                        </div>
+                    </div>
+                `);
+
+                $('#noteContainer').append(note);
+
+                note.find('.delete').click(function() {
+                    note.remove();
+                });
+
+                note.find('.edit').click(function() {
+                    let textarea = note.find('textarea');
+                    textarea.prop('disabled', !textarea.prop('disabled'));
+                });
+            }
+        });
+    </script>
+</body>
+</html>
